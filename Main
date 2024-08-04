@@ -1,0 +1,128 @@
+-- [[Made by TrueLZE]] --
+
+local Boats = {
+	["AthleteDucky"] = "Athlete Ducky",
+	["BabyDuckTrail"] = "Baby Duck Trail",
+	["BlueSnowmobile"] = "Blue Snowmobile",
+	["BlueWoodenMotorboat"] = "Blue Wooden Motorboat",
+	["Britannic"] = "HMHS Britannic",
+	["Catamaran"] = "Catamaran",
+	["CoffinBoat"] = "Coffin Boat",
+	["CombatBoat"] = "Combat Boat",
+	["CruiseShip"] = "Cruise Ship",
+	["DucklingBoat"] = "Duckling Boat",
+	["DuckyBoat"] = "Ducky Boat",
+	["DuckyBoatBeta"] = "The Golden Ducky",
+	["Duckmarine"] = "Duckmarine",
+	["EggSpeedBoat"] = "Eggcelerator",
+	["FestiveGalleon"] = "Festive Galleon",
+	["FishingBoat"] = "Fishing Boat",
+	["Galleon"] = "Games Galleon",
+	["GingerBoatMan"] = "Ginger Boat Man",
+	["GingerbreadSteamBoat"] = "Gingerbread Steam Boat",
+	["HoverHeart"] = "Hover-Heart",
+	["HydroTank"] = "Hydro Tank [SHRK 500 EXCLUSIVE]",
+	["Jetski"] = "Jetski",
+	["Lifeboat"] = "Lifeboat",
+	["LightBike"] = "Hover Bike",
+	["MagicWandBoat"] = "Magic Wand Boat",
+	["Marlin"] = "Marlin",
+	["MilitarySubmarine"] = "Military Submarine",
+	["PartyBoat"] = "Party Boat",
+	["PyroTank"] = "Pyro Tank",
+	["RedCanopyMotorboat"] = "Canopy Motorboat",
+	["RedMarlin"] = "Marlin GT",
+	["RGBTurretSleigh"] = "RGB Turret Sleigh",
+	["SeaBreacher"] = "Sea Breacher",
+	["SharkCageBoat"] = "Shark Cage Boat",
+	["Sleigh2022"] = "Sleigh 2022",
+	["Sleigh2023"] = "Sleigh 2023",
+	["Sloop"] = "Sloop",
+	["SmallDinghyMotorboat"] = "Small Dinghy Motorboat",
+	["SmallWoodenSailboat"] = "Small Wooden Sailboat",
+	["Snowmobile"] = "Red Snowmobile",
+	["StealthBoat"] = "Stealth Boat",
+	["Titanic"] = "Titanic",
+	["TourBoat"] = "Tour Boat",
+	["TubeBoat"] = "Double Doughnut Tube Boat",
+	["TugBoat"] = "Tug Boat",
+	["UFO"] = "UFO",
+	["UnicornBoat"] = "Unicorn Boat",
+	["VikingShip"] = "Viking Ship",
+	["ViperSpeedBoat"] = "Viper Speed Boat",
+	["Wildfire"] = "Wildfire"
+}
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "BoatSelectionGui"
+ScreenGui.Parent = game:GetService("CoreGui")
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "BoatSelectionFrame"
+MainFrame.Size = UDim2.new(0.25, 0, 0.5, 0)
+MainFrame.Position = UDim2.new(0.8, 0, 0.5, 0)
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Style = Enum.FrameStyle.RobloxRound
+MainFrame.Parent = ScreenGui
+
+local ControlsLabel = Instance.new("TextLabel")
+ControlsLabel.Name = "ControlsLabel"
+ControlsLabel.Text = "[X] Toggle UI"
+ControlsLabel.TextScaled = true
+ControlsLabel.TextColor3 = Color3.new(255, 255, 255)
+ControlsLabel.Font = Enum.Font.Oswald
+ControlsLabel.Size = UDim2.new(1, 0, 0.1, 0)
+ControlsLabel.BackgroundTransparency = 1
+ControlsLabel.Position = UDim2.new(0, 0,-0.125, 0)
+ControlsLabel.Parent = MainFrame
+
+local ScrollingFrame = Instance.new("ScrollingFrame")
+ScrollingFrame.Name = "BoatSelectionScrollingFrame"
+ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
+ScrollingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+ScrollingFrame.BackgroundTransparency = 1
+ScrollingFrame.BorderSizePixel = 0
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 6, 0)
+ScrollingFrame.ScrollBarImageTransparency = 1
+ScrollingFrame.Parent = MainFrame
+
+local GridLayout = Instance.new("UIGridLayout")
+GridLayout.Name = "BoatGridLayout"
+GridLayout.CellSize = UDim2.new(0.95, 0, 0.0135, 0)
+GridLayout.CellPadding = UDim2.new(0, 0, 0.005, 0)
+GridLayout.FillDirection = Enum.FillDirection.Horizontal
+GridLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+GridLayout.SortOrder = Enum.SortOrder.Name
+GridLayout.Parent = ScrollingFrame
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local EventsFolder = ReplicatedStorage:WaitForChild("EventsFolder")
+local BoatSelectionFolder = EventsFolder:WaitForChild("BoatSelection")
+local UpdateHostBoatEvent = BoatSelectionFolder:WaitForChild("UpdateHostBoat")
+
+for BoatID, DisplayName in pairs(Boats) do
+	local Button = Instance.new("TextButton")
+	Button.Name = BoatID .. "Button"
+	Button.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+	Button.Text = DisplayName
+	Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Button.Font = Enum.Font.Oswald
+	Button.TextScaled = true
+	Button.Parent = ScrollingFrame
+
+	local UICorner = Instance.new("UICorner")
+	UICorner.CornerRadius = UDim.new(0.25, 0)
+	UICorner.Parent = Button
+
+	Button.Activated:Connect(function()
+		UpdateHostBoatEvent:FireServer(BoatID)
+	end)
+end
+
+local UserInputService = game:GetService("UserInputService")
+UserInputService.InputBegan:Connect(function(Input, GameProcessed)
+	if not GameProcessed and Input.KeyCode == Enum.KeyCode.X then
+		MainFrame.Visible = not MainFrame.Visible
+	end
+end)
