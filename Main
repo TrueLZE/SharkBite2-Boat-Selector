@@ -1,5 +1,3 @@
--- [[Made by TrueLZE]] --
-
 local Boats = {
 	["AthleteDucky"] = "Athlete Ducky",
 	["BabyDuckTrail"] = "Baby Duck Trail",
